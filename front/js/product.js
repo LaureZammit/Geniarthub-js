@@ -13,6 +13,7 @@ async function init() {
     datas = await resultIdOpen()
     // console.log(datas)
     showDatas(datas, 1)
+    buyArticles(datas, 1)
 }
 
 init()
@@ -36,7 +37,8 @@ function showDatas(datas, id) {
     document.querySelector("#little-paragraphe").innerHTML = (minDescr.substring(0, 200)) + "..."
 
     // Bouton achat
-    document.querySelector(".button-buy").innerHTML = `Buy ${datas.shorttitle}`
+    const buttonBuy = document.querySelector(".button-buy")
+    buttonBuy.innerHTML = `Buy ${datas.shorttitle}`
 
     // Select
     const select = document.querySelector("select")
@@ -63,6 +65,24 @@ function showDatas(datas, id) {
     document.querySelector(".description").innerHTML = datas.description
 }
 
+
+buttonBuy.addEventListener('click', () => {
+    let optionsProduct = 
+    {
+        productId : productId,
+        quantity : document.getElementById('quantity').ariaValueMax,
+        format : document.getElementById('format').value
+    }
+    let productInLocalStorage = JSON.parse(localStorage.getItem("product"))
+
+    if(productInLocalStorage) {
+        productInLocalStorage.push(optionsProduct)
+        localStorage.setItem("product", JSON.stringify(productInLocalStorage))
+    }
+})
+
+
+
 // localStorag.setItem("key", "value")
 
 // <!-- Afficher le contenu d'un localStorage -->
@@ -75,7 +95,7 @@ function showDatas(datas, id) {
 // localStorage.removeItem("key")
 
 // Info à prendre en compte
-// Pour stocker des tableaux/objetx sur les localStorage
+// Pour stocker des tableaux/objets sur les localStorage
 // Vous allez devoir les stringify
 
 // Pour récupérer les données en mode JSON
