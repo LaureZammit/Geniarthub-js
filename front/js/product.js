@@ -5,13 +5,13 @@ const urlIdItem = window.location.search;
 const idItem = new URLSearchParams(urlIdItem);
 
 const idOpen = idItem.get('id')
-console.log(idOpen)
+// console.log(idOpen)
 
 let datas = []
 
 async function init() {
     datas = await resultIdOpen()
-    console.log(datas)
+    // console.log(datas)
     showDatas(datas, 1)
 }
 
@@ -33,39 +33,54 @@ function showDatas(datas, id) {
     // Modification de la partie droite
     document.querySelector("h1").innerHTML = datas.titre
     let minDescr = datas.description
-    document.querySelector("#little-paragraphe").innerHTML = (minDescr.substring(0, 200))
+    document.querySelector("#little-paragraphe").innerHTML = (minDescr.substring(0, 200)) + "..."
 
     // Bouton achat
     document.querySelector(".button-buy").innerHTML = `Buy ${datas.shorttitle}`
 
     // Select
-    let declinaisons = datas.declinaisons
-
     const select = document.querySelector("select")
-
-    datas.declinaisons.forEach(el => {
-        console.log(el)
-
+    
+    datas.declinaisons.forEach((el, index) => {
+        // console.log(el)
+        
         // Tu t'ancre sur le select
         // Tu fais un innerHtml += avec options
-        select.innerHTML += `<option value="${el.taille}">Format : ${el.taille}</option>`
+        select.innerHTML += `<option data-id="${index}" value="${el.taille}">Format : ${el.taille}</option>`
     })
-
+    
     // Affichage du prix
     document.querySelector('.showprice').innerHTML = `${datas.declinaisons[0].prix}€`
-
-    const option = document.querySelector('option')
-
-    option.addEventListener('click', () => {
-        for (let j = 0; j < datas.declinaisons; j++) {
-            document.querySelector('.showprice').innerHTML = `${datas.declinaisons[j].prix}€`
-        }
-
-        // datas.declinaisons.forEach((taille, prix) => {
-        //     document.querySelector('.showprice').innerHTML = datas.declinaisons.prix
-        // })
+    
+    select.addEventListener('change', () => {
+        const format = document.querySelector("#format")
+        const id = format.options[format.selectedIndex].dataset.id
+        // console.log(id)
+        document.querySelector(".showprice").innerHTML = `${datas.declinaisons[id].prix}€`
     })
 
     // Description basse
     document.querySelector(".description").innerHTML = datas.description
 }
+
+// localStorag.setItem("key", "value")
+
+// <!-- Afficher le contenu d'un localStorage -->
+// const key = localStorage.getItem("key")
+
+// <!-- Modifier le contenu d'un localStorage -->
+// localStorage.setItem("key", "nouvelle value")
+
+// <!-- Supprimer le contenu d'un localStorage -->
+// localStorage.removeItem("key")
+
+// Info à prendre en compte
+// Pour stocker des tableaux/objetx sur les localStorage
+// Vous allez devoir les stringify
+
+// Pour récupérer les données en mode JSON
+// Vous allez devoir les parse
+
+// JSON.stringify()
+
+// JSON.parse()
