@@ -278,3 +278,32 @@ article > div > div.price > p {
 p {
     white-space: break-spaces;
 }
+
+#section-cart-form {
+    max-width: 1440px;
+    margin: auto;
+}
+
+#cart-form {
+    border-top: 1px solid #EE7F43;
+}
+
+#carticon a {
+    text-decoration: none;
+}
+
+#carticon span {
+    background-color: #ee7f43bd;
+    color: #fff;
+    padding: 8px;
+    font-size: 130%;
+    border-radius: 100%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -30px;
+    left: -30px;
+}

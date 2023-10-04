@@ -1,11 +1,3 @@
-/* 
-Afficher pour chaque article en vente, les données depuis la base de données : 
-    <article>
-        <img src="img/01.png" alt="Titre produit">
-        <a href="product.html">Buy bird</a>
-    </article> 
-*/
-
 // http://localhost:3000/api/products/
 
 let datas = []
@@ -27,7 +19,7 @@ function showDatas(datas, id) {
     for (let i = 0; i < datas.length; i++) {
         document.querySelector(".products").innerHTML += `
             <article>
-                <img src="${datas[i].image}" alt="${datas[i].name}">
+                <img src="${datas[i].image}" alt="${datas[i].shorttitle}">
                 <a href="product.html?id=${datas[i]._id}">
                     Buy ${datas[i].shorttitle}
                 </a>

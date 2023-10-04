@@ -13,7 +13,9 @@
             <a href="index.html">
                 <img src="img/logo-black.png" alt="Logo GeniArtHub version sombre">
             </a>
-            <a href="cart.html"><img src="img/cart.svg" alt="Aller au panier"></a>
+            <a id="carticon" href="cart.html">
+                <img src="img/cart.svg" alt="Aller au panier">
+            </a>
         </div>
     </header>
 
@@ -23,24 +25,24 @@
             <div id="row-cart">
                 <div id="flex-cart">
                     <!-- ForEach -->
-                    <img src="" alt="">
+                    <!-- <img src="" alt="">
                     <h2></h2>
                     <p id="format-cart"></p>
                     <p id="prix-cart"></p>
                     <div>
                         <p id="quantite-cart"></p>
-                        <input type="number" name="quantity" placeholder="1" value="1" minlength="1">
+                        <input type="number" name="quantity" placeholder="" minlength="1">
                     </div>
-                    <a id="delete-article" href=""></a>
+                    <a id="delete-article" href=""></a> -->
                 </div>
-                <h2>Total de la commande</h2>
-                <p>X articles pour un montant de X €</p>
+                <!-- <h2>Total de la commande</h2>
+                <p>X articles pour un montant de X €</p> -->
             </div>
         </section>
 
         <section id="section-cart-form">
             <h2>Formulaire de commande</h2>
-            <form action="post">
+            <form id="cart-form" action="post">
                 <label for="prenom">Prénom :</label>
                 <input type="text" name="prenom">
 
@@ -65,5 +67,6 @@
         <p>Errante Creation © 2023 - GeniArtHub</p>
     </footer>
     <script src="js/cart.js"></script>
+    <script src="js/numberitem.js"></script>
 </body>
 </html>

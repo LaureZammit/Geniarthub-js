@@ -24,7 +24,7 @@ async function resultIdOpen() {
 
 function showDatas(datas, id) {
     // Balise title
-    document.querySelector("title").innerHTML = datas.titre
+    document.querySelector("title").innerHTML = "GeniArtHub - " + datas.titre
 
     // Modification de l'image
     document.querySelector("#image-oeuvre").src = datas.image
@@ -32,6 +32,9 @@ function showDatas(datas, id) {
 
     // Modification de la partie droite
     document.querySelector("h1").innerHTML = datas.titre
+
+    // Description courte (200 caractères)
+    // document.querySelector("#little-paragraphe").innerHTML = datas.description.substring(0, 200)) + "..."
     let minDescr = datas.description
     document.querySelector("#little-paragraphe").innerHTML = (minDescr.substring(0, 200)) + "..."
 
@@ -61,25 +64,23 @@ function showDatas(datas, id) {
     })
 
     // Description basse
-    document.querySelector(".description").innerHTML = datas.description
+    document.querySelector(".description").innerHTML = datas.description.replace(/'/g, '"')
 }
 
-const quantity = document.querySelector(".quantity")
+const quantity = document.querySelector("#quantity")
 
-// quantity.addEventListener('change', function () {
-//     let valeur = parseInt(quantity.value)
-
-//     if (valeur < 0 || valeur > 100) {
-//         valeur = 0;
-//         quantity.value = valeur
-//     }
-// })
+quantity.addEventListener('input', function () {
+    console.log("change")
+    if (quantity.value < 1 || quantity.value > 100) {
+        quantity.value = 1;
+    }
+})
 
 const buttonBuy = document.querySelector(".button-buy")
 
 buttonBuy.addEventListener('click', (e) => {
     e.preventDefault()
-    const quantite = document.querySelector("input").value
+    const quantite = document.querySelector("#quantity").value
     const format = document.querySelector('#format').value;
     const produit = {
         id: datas._id,
@@ -92,14 +93,48 @@ buttonBuy.addEventListener('click', (e) => {
     ajouterAuPanier(produit, quantite, format);
 
     let panier = localStorage.getItem("panier");
-    if (panier === null || panier < 0) {
+    if (panier === null) {
         panier = [];
     } else {
         panier = JSON.parse(panier);
     }
 
     localStorage.setItem("panier", JSON.stringify(panier));
-    
+});
+
+function ajouterAuPanier(produit, quantite, format) {
+
+    let panier = localStorage.getItem("panier");
+    panier = panier ? JSON.parse(panier) : [];
+
+    const produitExistant = panier.find(item => item.id === produit.id && item.format === format);
+
+    if (produitExistant) {
+        produitExistant.quantite += parseInt(quantite);
+        if(produitExistant.quantite > 100) {
+            // On ne peut pas dépasser 100 en quantité par produit et par format
+            produitExistant = 100
+            document.querySelector(".modal").innerHTML = `
+                <div class="modal-content">
+                <p>Pas plus de 100 produits par référence.</p>
+                <a href="cart.html">Voir le panier</a>
+                <button class="close-modal">Fermer</button>
+                </div>
+                `;
+            document.querySelector(".modal").style.display = "flex";
+            
+            const modal = document.querySelector(".close-modal");
+            modal.addEventListener("click", () => {
+                document.querySelector(".modal").style.display = "none";
+            });
+        }
+    } else {
+        panier.push({ id: produit.id, quantite: parseInt(quantite), format: format, produit });
+    }
+
+    localStorage.setItem("panier", JSON.stringify(panier));
+    numberItem()
+
     document.querySelector(".modal").innerHTML = `
     <div class="modal-content">
     <p>Produit ajouté au panier !</p>
@@ -113,26 +148,6 @@ buttonBuy.addEventListener('click', (e) => {
     modal.addEventListener("click", () => {
         document.querySelector(".modal").style.display = "none";
     });
-});
-
-function ajouterAuPanier(produit, quantite, format) {
-
-    let panier = localStorage.getItem("panier");
-    panier = panier ? JSON.parse(panier) : [];
-
-    const produitExistant = panier.find(item => item.id === produit.id && item.format === format);
-
-    if (produitExistant) {
-        produitExistant.quantite += parseInt(quantite);
-        if(produitExistant.quantite >= 100) {
-            // On ne peut pas dépasser 100 de quantité par produit et par format
-            
-        }
-    } else {
-        panier.push({ id: produit.id, quantite: parseInt(quantite), format: format, produit });
-    }
-
-    localStorage.setItem("panier", JSON.stringify(panier));
 }
 
 // localStorage.setItem("key", "value")
