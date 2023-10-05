@@ -113,20 +113,8 @@ function ajouterAuPanier(produit, quantite, format) {
         produitExistant.quantite += parseInt(quantite);
         if(produitExistant.quantite > 100) {
             // On ne peut pas dépasser 100 en quantité par produit et par format
-            produitExistant = 100
-            document.querySelector(".modal").innerHTML = `
-                <div class="modal-content">
-                <p>Pas plus de 100 produits par référence.</p>
-                <a href="cart.html">Voir le panier</a>
-                <button class="close-modal">Fermer</button>
-                </div>
-                `;
-            document.querySelector(".modal").style.display = "flex";
-            
-            const modal = document.querySelector(".close-modal");
-            modal.addEventListener("click", () => {
-                document.querySelector(".modal").style.display = "none";
-            });
+            showModal('Vous ne pouvez pas commander plus de 100 produits d\'une même oeuvre.')
+            return
         }
     } else {
         panier.push({ id: produit.id, quantite: parseInt(quantite), format: format, produit });
@@ -135,19 +123,19 @@ function ajouterAuPanier(produit, quantite, format) {
     localStorage.setItem("panier", JSON.stringify(panier));
     numberItem()
 
-    document.querySelector(".modal").innerHTML = `
-    <div class="modal-content">
-    <p>Produit ajouté au panier !</p>
-    <a href="cart.html">Voir le panier</a>
-    <button class="close-modal">Fermer</button>
-    </div>
-    `;
-    document.querySelector(".modal").style.display = "flex";
-    
-    const modal = document.querySelector(".close-modal");
-    modal.addEventListener("click", () => {
-        document.querySelector(".modal").style.display = "none";
-    });
+    showModal('Article ajouté au panier !')
+}
+
+function showModal(message) {
+    const modal = document.createElement('dialog')
+    modal.textContent = message
+    document.body.appendChild(modal)
+    modal.showModal()
+    setTimeout(() => {
+        modal.close()
+        // Destroy modal
+        modal.remove()
+    }, 3000)
 }
 
 // localStorage.setItem("key", "value")
