@@ -1,5 +1,6 @@
 let panier = localStorage.getItem("panier")
 let panierJson = JSON.parse(panier)
+let datasPanier;
 
 function afficherPanier() {
     let sommePrix = 0
@@ -7,7 +8,7 @@ function afficherPanier() {
     if(panierJson.length > 0) {
         panierJson.forEach(async (el) => {
             const recup = await fetch(`http://localhost:3000/api/products/${el.produit.id}`)
-            const datasPanier = await recup.json()
+            datasPanier = await recup.json()
         
             let rowCart = document.querySelector("#row-cart")
         
@@ -21,7 +22,7 @@ function afficherPanier() {
                 <p class="prix-cart">${datasPanier.declinaisons[indexOptions].prix}€</p>
                 <div>
                     <p class="quantite-cart">Quantité : </p>
-                    <input type="number" name="quantity" placeholder="${el.quantite}" minlength="1">
+                    <input class="quantite-input" type="number" name="quantity" value="${el.quantite}" minlength="1">
                 </div>
                 <a class="delete-article" href="#">Supprimer</a>
             </div>
@@ -36,28 +37,45 @@ function afficherPanier() {
         sommeArticle = panierJson.reduce((acc, el) => acc + el.quantite, 0)
         document.querySelector('#totalArticles').innerText = sommeArticle
         
-        // Fonction pour supprimer un élément du panier
-        const deleteArticle = document.querySelectorAll(".delete-article")
 
-        deleteArticle.forEach((el, index) => {
-            el.addEventListener('click', (e) => {
-                e.preventDefault()
-                panierJson.splice(index, 1)
-                localStorage.setItem("panier", JSON.stringify(panierJson))
-                window.location.reload()
+        setTimeout(() => {
+            // Fonction pour supprimer un élément du panier à partir du bouton delete-article
+            const deleteArticle = document.querySelectorAll(".delete-article")
+    
+            deleteArticle.forEach((el, index) => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault()
+                    // chercher l'élément avec la classe flex-cart le plus proche et le supprimer
+                    el.closest(".flex-cart").remove()
+                    panierJson.splice(index, 1)
+                    localStorage.setItem("panier", JSON.stringify(panierJson))
+                    numberItem()
+                })
             })
-        })
 
-        // Au changement de quantité, modifier les données du localStorage associées
-        const quantityCart = document.querySelectorAll(".quantite-cart")
+            // Fonction pour modifier la quantité d'un article au changement sans avoir à recharger la page
+            const quantiteInput = document.querySelectorAll(".quantite-input")
 
-        quantityCart.forEach((el, index) => {
-            el.addEventListener('change', (e) => {
-                e.preventDefault()
-                panierJson[index].quantite = e.target.value
-                localStorage.setItem("panier", JSON.stringify(panierJson))
+            quantiteInput.forEach((el, index) => {
+                el.addEventListener('change', (e) => {
+                    e.preventDefault()
+                    panierJson[index].quantite = el.value
+                    localStorage.setItem("panier", JSON.stringify(panierJson))
+                    // Mettez à jour le prix total de cet article dans le DOM en temps réel
+                    const prixArticle = panierJson[index].quantite * datasPanier.declinaisons[0].prix
+                    el.closest(".flex-cart").querySelector(".prix-cart").innerText = `${prixArticle}€`
+                    // Mettez à jour le nombre total d'articles en temps réel
+                    const sommeArticle = panierJson.reduce((acc, el) => acc + el.quantite, 0)
+                    document.querySelector('#totalArticles').innerText = sommeArticle
+                    // Mettez à jour le prix total général en temps réel
+                    sommePrix = panierJson.reduce((acc, el) => acc + el.quantite * datasPanier.declinaisons[0].prix, 0)
+                    document.querySelector('#prixArticles').innerText = sommePrix
+                    numberItem()
+                })
             })
-        })        
+            
+        }, 500);
+
     }
 }
 
