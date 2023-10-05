@@ -126,18 +126,6 @@ function ajouterAuPanier(produit, quantite, format) {
     showModal('Article ajouté au panier !')
 }
 
-function showModal(message) {
-    const modal = document.createElement('dialog')
-    modal.textContent = message
-    document.body.appendChild(modal)
-    modal.showModal()
-    setTimeout(() => {
-        modal.close()
-        // Destroy modal
-        modal.remove()
-    }, 3000)
-}
-
 // localStorage.setItem("key", "value")
 
 // <!-- Afficher le contenu d'un localStorage -->

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
     <link rel="stylesheet" href="css/style.css">
-    <title></title>
+    <title>GeniArtHub - Votre panier</title>
 </head>
 <body class="page">
     <header>
@@ -23,20 +23,10 @@
         <section id="section-cart">
             <h1>Votre panier</h1>
             <div id="row-cart">
-                <div id="flex-cart">
-                    <!-- ForEach -->
-                    <!-- <img src="" alt="">
-                    <h2></h2>
-                    <p id="format-cart"></p>
-                    <p id="prix-cart"></p>
-                    <div>
-                        <p id="quantite-cart"></p>
-                        <input type="number" name="quantity" placeholder="" minlength="1">
-                    </div>
-                    <a id="delete-article" href=""></a> -->
-                </div>
-                <!-- <h2>Total de la commande</h2>
-                <p>X articles pour un montant de X €</p> -->
+            </div>
+            <div id="totalCart">
+                <h2>Total de la commande</h2>
+                <p><span id="totalArticles">0</span> articles pour un montant de <span id="prixArticles">0</span>€</p>
             </div>
         </section>
 
@@ -78,5 +68,6 @@
     </footer>
     <script src="js/cart.js"></script>
     <script src="js/numberitem.js"></script>
+    <script src="js/modal.js"></script>
 </body>
 </html>
