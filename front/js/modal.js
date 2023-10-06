@@ -2,7 +2,7 @@
 
 function showModal(message) {
     const modal = document.createElement('dialog')
-    modal.textContent = message
+    modal.innerHTML = message
     document.body.appendChild(modal)
     modal.showModal()
     setTimeout(() => {

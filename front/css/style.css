@@ -351,7 +351,10 @@ p {
 }
 
 #cart-form-grid input {
+    font-family: 'Source Sans 3', sans-serif;
     height: 50px;
+    font-size: 30px;
+    line-height: 40px;
 }
 
 #cart-submit {

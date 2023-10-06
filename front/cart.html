@@ -32,27 +32,27 @@
 
         <section id="section-cart-form">
             <h2>Formulaire de commande</h2>
-            <form id="cart-form" action="post">
+            <form id="cart-form" action="#section-cart-form" method="post">
                 <div id="cart-form-grid">
                     <div>
                         <label for="prenom">Prénom :</label>
-                        <input type="text" name="prenom">
+                        <input id="prenom" type="text" name="prenom">
                     </div>
                     <div>
                         <label for="nom">Nom :</label>
-                        <input type="text" name="nom">
+                        <input id="nom" type="text" name="nom">
                     </div>
                     <div>
                         <label for="adresse">Adresse :</label>
-                        <input type="text" name="adresse">
+                        <input id="adresse" type="text" name="adresse">
                     </div>
                     <div>
                         <label for="ville">Ville :</label>
-                        <input type="text" name="ville">
+                        <input id="ville" type="text" name="ville">
                     </div>
                     <div>
                         <label for="email">Email :</label>
-                        <input type="mail" name="email">
+                        <input id="mail" type="mail" name="email">
                     </div>
                 </div>
 
@@ -67,6 +67,7 @@
         <p>Errante Creation © 2023 - GeniArtHub</p>
     </footer>
     <script src="js/cart.js"></script>
+    <script src="js/cartform.js"></script>
     <script src="js/numberitem.js"></script>
     <script src="js/modal.js"></script>
 </body>

@@ -1,5 +1,5 @@
 let panier = localStorage.getItem("panier")
-let panierJson = JSON.parse(panier)
+let panierJson = JSON.parse(panier) ? JSON.parse(panier) : []
 let datasPanier;
 
 function afficherPanier() {
@@ -28,9 +28,9 @@ function afficherPanier() {
             </div>
             `)
             sommePrix += el.quantite * datasPanier.declinaisons[0].prix
-            document.querySelector('#prixArticles').innerText = sommePrix
+            const sommePrixFormatted = sommePrix.toFixed(2)
+            document.querySelector('#prixArticles').innerText = sommePrixFormatted
         })
-        console.log(sommePrix)
         
         let sommeArticle = 0
         
@@ -58,25 +58,47 @@ function afficherPanier() {
 
             quantiteInput.forEach((el, index) => {
                 el.addEventListener('change', (e) => {
+                    // Si la quantité est inférieure à 1 : supprimer la ligne. Sinon si la quantité est supérieure à 100 : ouvrire la modale avec le message : la quantité par oeuvre ne peut pas excéder 100.
                     e.preventDefault()
-                    panierJson[index].quantite = el.value
-                    localStorage.setItem("panier", JSON.stringify(panierJson))
-                    // Mettez à jour le prix total de cet article dans le DOM en temps réel
-                    const prixArticle = panierJson[index].quantite * datasPanier.declinaisons[0].prix
-                    el.closest(".flex-cart").querySelector(".prix-cart").innerText = `${prixArticle}€`
-                    // Mettez à jour le nombre total d'articles en temps réel
-                    const sommeArticle = panierJson.reduce((acc, el) => acc + el.quantite, 0)
-                    document.querySelector('#totalArticles').innerText = sommeArticle
-                    // Mettez à jour le prix total général en temps réel
-                    sommePrix = panierJson.reduce((acc, el) => acc + el.quantite * datasPanier.declinaisons[0].prix, 0)
-                    document.querySelector('#prixArticles').innerText = sommePrix
-                    numberItem()
+                    if (el.value < 1) {
+                        el.closest(".flex-cart").remove()
+                        panierJson.splice(index, 1)
+                        localStorage.setItem("panier", JSON.stringify(panierJson))
+                        numberItem()
+                    } else if (el.value > 100) {
+                        showModal('Vous ne pouvez pas commander plus de 100 produits d\'une même oeuvre.')
+                        el.value = 100
+                        panierJson[index].quantite = parseInt(el.value)
+                        localStorage.setItem("panier", JSON.stringify(panierJson))
+                        // Mettez à jour le prix total de cet article dans le DOM en temps réel
+                        const prixArticle = panierJson[index].quantite * datasPanier.declinaisons[0].prix
+                        el.closest(".flex-cart").querySelector(".prix-cart").innerText = `${prixArticle}€`
+                        // Mettez à jour le nombre total d'articles en temps réel
+                        const sommeArticle = panierJson.reduce((acc, el) => acc + el.quantite, 0)
+                        document.querySelector('#totalArticles').innerText = sommeArticle
+                        // Mettez à jour le prix total général en temps réel
+                        sommePrix = panierJson.reduce((acc, el) => acc + el.quantite * datasPanier.declinaisons[0].prix, 0)
+                        const sommePrixFormatted = sommePrix.toFixed(2)
+                        document.querySelector('#prixArticles').innerText = sommePrixFormatted
+                        numberItem()
+                    } else {
+                        panierJson[index].quantite = parseInt(el.value)
+                        localStorage.setItem("panier", JSON.stringify(panierJson))
+                        // Mettez à jour le prix total de cet article dans le DOM en temps réel
+                        const prixArticle = panierJson[index].quantite * datasPanier.declinaisons[0].prix
+                        el.closest(".flex-cart").querySelector(".prix-cart").innerText = `${prixArticle}€`
+                        // Mettez à jour le nombre total d'articles en temps réel
+                        const sommeArticle = panierJson.reduce((acc, el) => acc + el.quantite, 0)
+                        document.querySelector('#totalArticles').innerText = sommeArticle
+                        // Mettez à jour le prix total général en temps réel
+                        sommePrix = panierJson.reduce((acc, el) => acc + el.quantite * datasPanier.declinaisons[0].prix, 0)
+                        sommePrixFormatted = sommePrix.toFixed(2)
+                        document.querySelector('#prixArticles').innerText = sommePrixFormatted
+                        numberItem()
+                    }
                 })
             })
-            
         }, 500);
-
-    }
-}
+    }}
 
 afficherPanier()
