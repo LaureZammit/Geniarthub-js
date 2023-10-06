@@ -99,6 +99,9 @@ function afficherPanier() {
                 })
             })
         }, 500);
-    }}
+    } else {
+        document.querySelector("#row-cart").innerHTML = "<p>Votre panier est vide. Veuillez ajouter au moins un article à votre panier.</p>";
+    }
+}
 
 afficherPanier()

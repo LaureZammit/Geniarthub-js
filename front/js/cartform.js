@@ -7,7 +7,7 @@ const email = document.querySelector("#mail");
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    // Validation du prénom
+    // Validation du prénom : minimum 2 lettres, pas de caractères spéciaux mais accèpte les accents
     if (firstName.value.length < 2 || firstName.value.match(/[^a-zA-Z]/)) {
         showModal("Veuillez entrer un prénom valide");
         return;
@@ -32,6 +32,7 @@ form.addEventListener("submit", (e) => {
         showModal("Veuillez entrer une adresse email valide");
         return;
     }
+    
     // La page confirmation de commande
     // La page de confirmation de commande doit afficher le numéro de commande récupéré
     // depuis le back lors de la validation d’une commande.
@@ -67,8 +68,24 @@ form.addEventListener("submit", (e) => {
         .then((data) => {
             localStorage.setItem("order", JSON.stringify(data));
             showModal("Félicitations! La commande a été passée avec succès. Voici votre numéro de commande : " + data.orderId);
-    })
+        })
 
-    // Vider le localStorage panier après la commande
-    // localStorage.removeItem("panier");
+        setTimeout(() => {
+            // Vider le localStorage panier après la commande
+            localStorage.removeItem("panier");
+            // Afficher un message à la place du panier
+            document.querySelector("#row-cart").innerHTML = "<p>Votre panier est vide. Veuillez ajouter au moins un article à votre panier.</p>";
+            // Réinitialiser les données : totalArticles, prixArticles, carticon sans avoir besoin de recharger la page
+            document.querySelector('#totalArticles').innerText = 0
+            document.querySelector('#prixArticles').innerText = 0
+            document.querySelector('#carticon span').innerText = 0
+            document.querySelector('#carticon span').style.visibility = "hidden"
+            numberItem()
+            // Réinitialiser les données du formulaire
+            document.querySelector("#prenom").value = "";
+            document.querySelector("#nom").value = "";
+            document.querySelector("#adresse").value = "";
+            document.querySelector("#ville").value = "";
+            document.querySelector("#mail").value = "";
+        } , 500);
 });
