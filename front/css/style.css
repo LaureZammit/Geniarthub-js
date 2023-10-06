@@ -431,3 +431,7 @@ p {
     font-size: 32px;
     line-height: 40px;
 }
+
+dialog h2 {
+    text-align: center;
+}
