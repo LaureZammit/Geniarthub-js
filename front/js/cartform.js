@@ -67,7 +67,7 @@ form.addEventListener("submit", (e) => {
         .then((response) => response.json())
         .then((data) => {
             localStorage.setItem("order", JSON.stringify(data));
-            showModal("Félicitations! La commande a été passée avec succès. Voici votre numéro de commande : " + data.orderId);
+            showModal("La commande a été passée avec succès. Voici votre numéro de commande : " + data.orderId, "Félicitations!");
         })
 
         setTimeout(() => {
